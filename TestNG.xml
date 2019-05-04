@@ -1,0 +1,23 @@
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd" >
+<suite parallel="false" name="nopCommerceRegressionSuite">
+	<parameter name="Browser" value="Chrome"></parameter>
+	<test name="nopCommerceRegression" preserve-order = "true">
+		<classes>
+		<class name="Nopcommerce.AFT.TestUserContactUs"/>
+			<class name="Nopcommerce.AFT.TestAutoCompleteSearch"/>
+			<class name="Nopcommerce.AFT.TestUserChangeCurrency"/>
+			<class name="Nopcommerce.AFT.TestUserSearch"/>
+			<class name="Nopcommerce.AFT.TestHoverList"/>
+			<class name="Nopcommerce.AFT.TestAddToWishList"/>
+			<class name="Nopcommerce.AFT.TestAddToCompareList"/>
+			<class name="Nopcommerce.AFT.TestAddToShoppingCart"/>
+			<class name="Nopcommerce.AFT.TestCheckOutOrderAsGuest"/>
+			<class name="Nopcommerce.AFT.TestUserRegisteration" />
+			<class name="Nopcommerce.AFT.TestUserChangePassword"/>
+			<class name="Nopcommerce.AFT.TestUserEmailFriend"/>
+			<class name="Nopcommerce.AFT.TestUserAddProductReview"/>
+			<class name="Nopcommerce.AFT.TestCheckOutOrderForRegisterUser"/>
+			
+		</classes>
+	</test>
+</suite>
