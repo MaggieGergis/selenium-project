@@ -16,7 +16,6 @@ public class TestUserContactUs extends TestBase
 	public void ContactUs() 
 	{
 		HomeObject = new HomePage(Driver);
-		//HomeObject.OpenContactUsPage();
 		HomeObject.OpenContactUsPage();
 		ContactUsObject = new ContactUsPage(Driver);
 		ContactUsObject.UserContactUs(Name, Email, Enquiry);

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.io.FileUtils;
+import org.openqa.selenium.Capabilities;
 import org.openqa.selenium.OutputType;
 import org.openqa.selenium.TakesScreenshot;
 import org.openqa.selenium.WebDriver;
@@ -15,7 +16,10 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.ie.InternetExplorerDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriver;
+import org.openqa.selenium.phantomjs.PhantomJSDriverService;
 import org.openqa.selenium.remote.CapabilityType;
+import org.openqa.selenium.remote.DesiredCapabilities;
 import org.testng.ITestResult;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.AfterSuite;
@@ -40,9 +44,9 @@ public class TestBase extends AbstractTestNGCucumberTests
 			String chromePath = System.getProperty("user.dir") + "\\Drivers\\chromedriver.exe";
 			System.setProperty("webdriver.chrome.driver", chromePath);
 			Driver = new ChromeDriver(chromeoptions());
-			
 		}
-		else if(BrowserName.equalsIgnoreCase("firefox") )
+		
+		 if(BrowserName.equalsIgnoreCase("firefox") )
 		{
 			String FirefoxPath = System.getProperty("user.dir") + "\\Drivers\\geckodriver.exe";
 			System.setProperty("webdriver.gecko.driver", FirefoxPath);
@@ -54,11 +58,31 @@ public class TestBase extends AbstractTestNGCucumberTests
 			System.setProperty("webdriver.ie.driver", IEPath);
 			Driver = new InternetExplorerDriver();
 		}
+
+		else if (BrowserName.equalsIgnoreCase("HeadlessBrowser")) 
+		{
+			DesiredCapabilities Cap = new DesiredCapabilities();
+			Cap.setJavascriptEnabled(true);
+			Cap.setCapability(PhantomJSDriverService.PHANTOMJS_EXECUTABLE_PATH_PROPERTY,System.getProperty("user.dir") + "\\Drivers\\phantomjs.exe");
+			String [] Pahntomargs = {"--web-security=false","--ignore-ssl-errors=true"};
+			Cap.setCapability(PhantomJSDriverService.PHANTOMJS_CLI_ARGS, Pahntomargs);
+			Driver = new PhantomJSDriver(Cap);
+		}
+		 
+		else if (BrowserName.equalsIgnoreCase("ChromeHeadless"))
+		{
+			System.setProperty("webdriver.chrome.driver",System.getProperty("user.dir")+"\\Drivers\\chromedriver.exe");
+			ChromeOptions options = new ChromeOptions();
+			options.addArguments("--headless");
+			options.addArguments("--headless");
+			Driver = new ChromeDriver(options);
+		}
+
 		Driver.manage().window().maximize();
 		Driver.navigate().to("http://demo.nopcommerce.com/electronics");
 
 	}
-	
+
 	protected static ChromeOptions chromeoptions()
 	{
 		ChromeOptions options = new ChromeOptions();
@@ -70,7 +94,7 @@ public class TestBase extends AbstractTestNGCucumberTests
 		return options;
 
 	}
-	
+
 	public static FirefoxOptions firefoxOptions ()
 	{
 		FirefoxOptions options = new FirefoxOptions();
@@ -86,9 +110,9 @@ public class TestBase extends AbstractTestNGCucumberTests
 	{
 		if (ITestResult.FAILURE == Result.getStatus())
 		{
-		TakesScreenshot ScShot = (TakesScreenshot) Driver;
-		File Source = ScShot.getScreenshotAs(OutputType.FILE);
-		FileUtils.copyFile(Source, new File (".\\ScreenShots\\"+Result.getName()+".png"));
+			TakesScreenshot ScShot = (TakesScreenshot) Driver;
+			File Source = ScShot.getScreenshotAs(OutputType.FILE);
+			FileUtils.copyFile(Source, new File (".\\ScreenShots\\"+Result.getName()+".png"));
 		}	
 	}
 
@@ -99,5 +123,5 @@ public class TestBase extends AbstractTestNGCucumberTests
 		Driver.quit();
 	}
 
-	
+
 }
